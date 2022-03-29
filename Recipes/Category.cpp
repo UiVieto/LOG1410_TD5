@@ -14,10 +14,8 @@ Category::Category(const Category& mdd)
 	: AbsCatalogComponent(mdd.m_name)
 {
 	// À compléter pour copier tous les éléments du catalogue contenus dans la catégorie
-	std::list<CatalogComponentPtr>::const_iterator it;
-	for (it = mdd.cbegin(); it != mdd.cend(); it++)
-	{
-		this->addCatalogComponent(**it);
+	for (auto&& product : mdd.m_products) {
+		this->addCatalogComponent(*product);
 	}
 }
 
@@ -76,18 +74,21 @@ const AbsProduct* Category::findProduct(std::string productName) const
 	// À compléter pour itérer sur les éléments contenus dans la catégorie à la recherche d'un produit
 	// portant le nom reçu en argument. Si aucun produit n'est trouvé on retourne nullptr
 	const AbsProduct* foundProduct = nullptr;
+	const Category* foundCategory = nullptr;
 	// À compléter
-	std::list<CatalogComponentPtr>::const_iterator it;
-	for (it = m_products.cbegin(); it != m_products.cend(); it++)
-	{
-		if (it->get()->getName() == productName);
-		{
-			const AbsCatalogComponent* ptrComponent = it->get();
-			//foundProduct = ptrComponent;
+	for (auto&& product : m_products) {
+		foundProduct = dynamic_cast<const AbsProduct*>(product.get());
+		if (foundProduct != nullptr) {
+			if (foundProduct->getName() == productName)
+				return foundProduct;
+		}
+		else {
+			foundCategory = dynamic_cast<const Category*>(product.get());
+			if (foundCategory != nullptr) {
+				return foundCategory->findProduct(productName);
+			}
 		}
 	}
-
-	return foundProduct;
 }
 
 std::ostream& Category::printToStream(std::ostream& o) const
@@ -98,7 +99,6 @@ std::ostream& Category::printToStream(std::ostream& o) const
 	for (it = m_products.cbegin(); it != m_products.cend(); it++)
 	{
 		o << "\t" << "Category: " << it->get()->getName() << std::endl;
-		//Completer
 		o << std::endl;
 	}
 

@@ -18,7 +18,7 @@ Ingredient::Ingredient(std::string name, int duration, const AbsProduct& product
 Ingredient* Ingredient::clone() const
 {
 	// À compléter pour construire un nouvel objet Ingredient en appelant le constructeur de copie
-	return nullptr; // À remplacer
+	return new Ingredient(*this);
 }
 
 const AbsProduct& Ingredient::getProduct() const

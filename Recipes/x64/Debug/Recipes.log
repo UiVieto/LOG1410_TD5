@@ -1,0 +1,3 @@
+﻿  Category.cpp
+C:\Users\alext\OneDrive\Documents\GitHub\LOG1410_TP5\Recipes\Category.cpp(92): warning C4715: 'Category::findProduct': not all control paths return a value
+  Recipes.vcxproj -> C:\Users\alext\OneDrive\Documents\GitHub\LOG1410_TP5\x64\Debug\Recipes.exe
