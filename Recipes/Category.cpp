@@ -10,25 +10,31 @@ Category::Category(std::string name)
 {
 }
 
-Category::Category(const Category & mdd)
+Category::Category(const Category& mdd)
 	: AbsCatalogComponent(mdd.m_name)
 {
 	// À compléter pour copier tous les éléments du catalogue contenus dans la catégorie
+	std::list<CatalogComponentPtr>::const_iterator it;
+	for (it = mdd.cbegin(); it != mdd.cend(); it++)
+	{
+		this->addCatalogComponent(**it);
+	}
 }
 
-Category * Category::clone(void) const
+Category* Category::clone(void) const
 {
 	// À compléter pour construire un nouvel objet Category en appelant le constructeur de copie
-	return nullptr; // À remplacer
+	return new Category(*this);
 }
 
-AbsCatalogComponent& Category::addCatalogComponent(const AbsCatalogComponent & member)
+AbsCatalogComponent& Category::addCatalogComponent(const AbsCatalogComponent& member)
 {
 	// À compléter pour construire par clonage une copie de l'objet reçu en paramètre
 	// et l'insérer dans le conteneur de produits. On retourne une référence à l'objet
 	// qui vient d'être inséré dans le conteneur.
+	m_products.push_back(CatalogComponentPtr(member.clone()));
 
-	return *this; // À remplacer 
+	return *m_products.back();
 }
 
 CatalogComponentIterator Category::begin()
@@ -54,11 +60,15 @@ CatalogComponentIterator Category::end()
 void Category::deleteCatalogComponent(CatalogComponentIterator_const child)
 {
 	// À compléter pour éliminer de la catégorie l'élément auquel réfère l'itérateur
+	m_products.erase(child);
 }
 
 void Category::deleteAllComponents(void)
 {
 	// À compléter pour éliminer tous les éléments de la catégorie
+	while (m_products.size() > 0) {
+		m_products.pop_back();
+	}
 }
 
 const AbsProduct* Category::findProduct(std::string productName) const
@@ -66,19 +76,36 @@ const AbsProduct* Category::findProduct(std::string productName) const
 	// À compléter pour itérer sur les éléments contenus dans la catégorie à la recherche d'un produit
 	// portant le nom reçu en argument. Si aucun produit n'est trouvé on retourne nullptr
 	const AbsProduct* foundProduct = nullptr;
-
 	// À compléter
+	std::list<CatalogComponentPtr>::const_iterator it;
+	for (it = m_products.cbegin(); it != m_products.cend(); it++)
+	{
+		if (it->get()->getName() == productName);
+		{
+			const AbsCatalogComponent* ptrComponent = it->get();
+			//foundProduct = ptrComponent;
+		}
+	}
 
 	return foundProduct;
 }
 
-std::ostream & Category::printToStream(std::ostream & o) const
+std::ostream& Category::printToStream(std::ostream& o) const
 {
 	// À compléter pour imprimer sur un stream une catégorie et ses produits
+	o << "Category: " << m_name << std::endl;
+	std::list<CatalogComponentPtr>::const_iterator it;
+	for (it = m_products.cbegin(); it != m_products.cend(); it++)
+	{
+		o << "\t" << "Category: " << it->get()->getName() << std::endl;
+		//Completer
+		o << std::endl;
+	}
+
 	return o;
 }
 
-std::ostream & Category::indent(std::ostream & o) const
+std::ostream& Category::indent(std::ostream& o) const
 {
 	for (int i = 0; i < m_indent; ++i)
 		o << '\t';
