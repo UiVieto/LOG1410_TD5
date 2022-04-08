@@ -26,9 +26,10 @@ const AbsProduct& Ingredient::getProduct() const
 	return m_product;
 }
 
-std::ostream& Ingredient::printToStream(std::ostream& o) const 
+std::ostream& Ingredient::printToStream(std::ostream& o) const
 {
 	// À compléter pour imprimer sur un stream une catégorie et ses produits
+	o << this->getProduct().getName() << " " << this->getDescription() << std::endl;
 	return o;
 }
 

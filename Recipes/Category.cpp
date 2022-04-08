@@ -15,7 +15,7 @@ Category::Category(const Category& mdd)
 {
 	// À compléter pour copier tous les éléments du catalogue contenus dans la catégorie
 	for (auto&& product : mdd.m_products) {
-		this->addCatalogComponent(*product);
+		addCatalogComponent(*product);
 	}
 }
 
@@ -64,9 +64,7 @@ void Category::deleteCatalogComponent(CatalogComponentIterator_const child)
 void Category::deleteAllComponents(void)
 {
 	// À compléter pour éliminer tous les éléments de la catégorie
-	while (m_products.size() > 0) {
-		m_products.pop_back();
-	}
+	m_products.clear();
 }
 
 const AbsProduct* Category::findProduct(std::string productName) const
@@ -74,33 +72,26 @@ const AbsProduct* Category::findProduct(std::string productName) const
 	// À compléter pour itérer sur les éléments contenus dans la catégorie à la recherche d'un produit
 	// portant le nom reçu en argument. Si aucun produit n'est trouvé on retourne nullptr
 	const AbsProduct* foundProduct = nullptr;
-	const Category* foundCategory = nullptr;
 	// À compléter
 	for (auto&& product : m_products) {
-		foundProduct = dynamic_cast<const AbsProduct*>(product.get());
+		foundProduct = (product)->findProduct(productName);
 		if (foundProduct != nullptr) {
-			if (foundProduct->getName() == productName)
-				return foundProduct;
-		}
-		else {
-			foundCategory = dynamic_cast<const Category*>(product.get());
-			if (foundCategory != nullptr) {
-				return foundCategory->findProduct(productName);
-			}
+			break;
 		}
 	}
+	return foundProduct;
 }
 
 std::ostream& Category::printToStream(std::ostream& o) const
 {
 	// À compléter pour imprimer sur un stream une catégorie et ses produits
-	o << "Category: " << m_name << std::endl;
-	std::list<CatalogComponentPtr>::const_iterator it;
-	for (it = m_products.cbegin(); it != m_products.cend(); it++)
-	{
-		o << "\t" << "Category: " << it->get()->getName() << std::endl;
-		o << std::endl;
+	o << "Category: " << this->getName() << std::endl;
+	++m_indent;
+	for (auto&& product : m_products) {
+		indent(o);
+		o << *product;
 	}
+	--m_indent;
 
 	return o;
 }

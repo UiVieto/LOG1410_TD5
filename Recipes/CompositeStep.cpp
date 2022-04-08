@@ -16,12 +16,15 @@ CompositeStep::CompositeStep(const CompositeStep& mdd)
 	: AbsStep(mdd)
 {
 	// À compléter pour copier toutes les sous-étapes contenues dans l'étape
+	for (auto&& step : mdd.m_stepsContainer) {
+		addRecipeComponent(*step);
+	}
 }
 
 CompositeStep* CompositeStep::clone() const
 {
 	// À compléter pour construire un nouvel objet CompositeStep en appelant le constructeur de copie
-	return nullptr; // À remplacer
+	return new CompositeStep(*this);
 }
 
 RecipeComponentIterator CompositeStep::begin() {
@@ -36,12 +39,12 @@ RecipeComponentIterator_const CompositeStep::cbegin() const {
 }
 
 
-RecipeComponentIterator_const CompositeStep::cend() const 
+RecipeComponentIterator_const CompositeStep::cend() const
 {
 	return m_stepsContainer.cend();
 }
 
-RecipeComponentIterator CompositeStep::end() 
+RecipeComponentIterator CompositeStep::end()
 {
 	return  m_stepsContainer.end();
 }
@@ -57,28 +60,45 @@ AbsRecipeComponent& CompositeStep::addRecipeComponent(const AbsStep& member)
 	// À compléter pour construire par clonage une copie de l'objet reçu en paramètre
 	// et l'insérer dans le conteneur des étapes. On retourne une référence à l'objet
 	// qui vient d'être inséré dans le conteneur.
+	m_stepsContainer.push_back(RecipeComponentPtr(member.clone()));
 
-	return *this; // À remplacer 
+	return *m_stepsContainer.back();
 }
 
 void CompositeStep::deleteRecipeComponent(RecipeComponentIterator_const child)
 {
 	// À compléter pour éliminer des étapes l'élément auquel réfère l'itérateur
+	m_stepsContainer.erase(child);
 }
 
 void CompositeStep::deleteAllComponents(void)
 {
 	// À compléter pour éliminer tous les éléments de l'étape
+	m_stepsContainer.clear();
 }
 
 int CompositeStep::getDuration() const
 {
 	// À compléter pour calculer le temps total en sommant la durée de toutes les sous-étapes
-	return 0; // À remplacer
+	int duration = 0;
+	for (auto&& step : m_stepsContainer) {
+		duration += step->getDuration();
+	}
+	return duration;
 }
 
-std::ostream& CompositeStep::printToStream(std::ostream& o) const 
+std::ostream& CompositeStep::printToStream(std::ostream& o) const
 {
 	// À compléter pour imprimer sur un stream une étape et ses sous-étapes
+	o << this->getDescription() << std::endl;
+	++m_indent;
+	int counter = 0;
+	for (auto&& step : m_stepsContainer) {
+		counter++;
+		indent(o);
+		o << counter << " " << *step;
+	}
+	--m_indent;
+
 	return o;
 }

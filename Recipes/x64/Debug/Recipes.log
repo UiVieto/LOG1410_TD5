@@ -1,3 +1,18 @@
-﻿  Category.cpp
-C:\Users\alext\OneDrive\Documents\GitHub\LOG1410_TP5\Recipes\Category.cpp(92): warning C4715: 'Category::findProduct': not all control paths return a value
-  Recipes.vcxproj -> C:\Users\alext\OneDrive\Documents\GitHub\LOG1410_TP5\x64\Debug\Recipes.exe
+﻿  AbsCatalogComponent.cpp
+  AbsIngredient.cpp
+  AbsProduct.cpp
+  AbsRecipeComponent.cpp
+  AbsStep.cpp
+  Catalog.cpp
+  Category.cpp
+  CompositeStep.cpp
+  Ingredient.cpp
+  Recipe.cpp
+  RecipeBook.cpp
+  Recipes.cpp
+  SingleStep.cpp
+  UnitProduct.cpp
+  WeighedProduct.cpp
+  Génération de code en cours...
+  LINK : C:\Users\mat_f\OneDrive\Documents\GitHub\LOG1410_TP5\x64\Debug\Recipes.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
+  Recipes.vcxproj -> C:\Users\mat_f\OneDrive\Documents\GitHub\LOG1410_TP5\x64\Debug\Recipes.exe
