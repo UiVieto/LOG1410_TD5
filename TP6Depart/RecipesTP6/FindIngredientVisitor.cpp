@@ -35,7 +35,7 @@ void FindIngredientVisitor::processRecipe(Recipe& recipe)
 	// À compléter: itérer sur tous les ingrédients de la recette
 	//                   - conserver un pointeur sur l'itérateur de l'ingrédient
 	//                   - appliquer le visiteur sur l'ingrédient
-	for (auto it = recipe.begin(); it != recipe.end(); m_currentIterator++) {
+	for (auto it = recipe.begin(); it != recipe.end(); it++) {
 		m_currentIterator = &it;
 		it->accept(*this);
 	}
